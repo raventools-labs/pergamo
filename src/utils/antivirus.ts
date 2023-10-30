@@ -1,4 +1,5 @@
 import NodeClam  from 'clamscan';
+import log from './log';
 import { StatusCodes, ValidationError } from '../middleware/error.middleware';
 
 class Antivirus {
@@ -12,20 +13,18 @@ class Antivirus {
       });
   
       const version = await this.clamscan.getVersion();
-      console.log(version);
+      log.info(`Antivirus: ${version}`);
     }
   }
 
-  scan = async (filePath:string) => {
+  scan = async (filePath:string, req:any) => {
 
     await this.init();
     
     const {isInfected, file, viruses} = await this.clamscan.isInfected(filePath);
   
-    if(isInfected) {
-      console.log(`${file} is infected with ${viruses}!`);
-      throw new ValidationError(StatusCodes.BAD_REQUEST,'FILE_CORRUPT', 'File is corrupt')
-    }
+    if(isInfected) throw new ValidationError(StatusCodes.BAD_REQUEST,
+      'FILE_CORRUPT', `File is infected with ${viruses}`, req)
   }
 }
 

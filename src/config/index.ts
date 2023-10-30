@@ -10,6 +10,8 @@ export default {
   path_base,
   tmp_base: path.join(path_base, 'tmp'),
   enable_antivirus: process.env.ENABLE_ANTIVIRUS === 'true' || false,
+  debug: process.env.DEBUG === 'true' || false,
+  remove_file_disk: process.env.REMOVE_FILE_DISK === 'true' || true,
   port: process.env.PORT || 3000,
   db: {
     username: process.env.DB_USERNAME,

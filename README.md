@@ -2,7 +2,7 @@
 
 
 ## Antivirus
-apt-get install clamav clamav-daemon
+apt-get install clamav clamav-daemon clamav-freshclam
 
 Example Virus
 ```
