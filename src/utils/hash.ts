@@ -1,7 +1,14 @@
 import crypto from "crypto";
 import fs from "fs";
 
-export const sha256 = async(filePath:string ) => {
+export const sha256 = async(str:string ) => {
+
+  const hash = crypto.createHash('sha256');
+  hash.update(str);
+  return hash.digest('hex');
+}
+
+export const sha256File = async(filePath:string ) => {
 
   return new Promise((resolve, reject) => {
     const fileStream = fs.createReadStream(filePath);

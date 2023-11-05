@@ -6,7 +6,7 @@ import Config from '../config';
 export const globalHandler = (req, res, next) => {
   req.id = UUID.v4();
   const startTime = process.hrtime();
-  log.debug(`${req.method} ${req.originalUrl} - ${req.id} | Start request`)
+  log.debug(`${req.method} ${req.originalUrl} - ${req.id} | Start request`);
 
   res.on('finish', () => {
     const endTime = process.hrtime(startTime);
