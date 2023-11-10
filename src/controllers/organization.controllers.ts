@@ -136,8 +136,6 @@ const changePasswordUser = async (req, res, next) => {
 
     const { organization } = req.user;
 
-    console.log('User', req.user);
-
     await changePassword(organization, req);
 
     res.status(StatusCodes.OK)
