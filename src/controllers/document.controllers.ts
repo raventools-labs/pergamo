@@ -30,8 +30,8 @@ const upload = async (req, res, next) => {
       await antivirus.scan(file.path, req);
     }
 
-    if(!Config.valid_mimetype.includes(file.mimetype)) throw new ValidationError(StatusCodes.BAD_REQUEST, 
-      'INVALID_MIMETYPE', 'Invalid mimetype', req);
+    if(!Config.valid_mimetype.includes(file.mimetype)) throw new ValidationError(StatusCodes.BAD_REQUEST,
+      'INVALID_MIMETYPE', `Invalid mimetype "${file.mimetype}"`, req);
 
     const metadata = {
       name: path.parse(file.originalname).name,

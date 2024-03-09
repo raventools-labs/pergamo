@@ -4,7 +4,7 @@ services:
   pergamo:
     container_name: "pergamo"
     image: "pergamo"
-    # user: "1000:1000"
+    restart: "always"
     build:
       context: .
       dockerfile: "Dockerfile"

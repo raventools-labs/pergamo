@@ -1,10 +1,9 @@
-# Pergamo
+# <i class="fas fa-book"></i> Pergamo
 
 
 ## Antivirus
-apt-get install clamav clamav-daemon clamav-freshclam
 
-Example Virus
+Virus example to test
 ```
 X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*
 ```
