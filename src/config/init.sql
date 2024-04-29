@@ -4,7 +4,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 CREATE EXTENSION IF NOT EXISTS unaccent;
 
-CREATE OR REPLACE FUNCTION search_str(varchar)
+CREATE OR REPLACE FUNCTION clean_str(varchar)
   RETURNS varchar AS $$
 BEGIN
   RETURN unaccent('unaccent', $1);

@@ -4,9 +4,7 @@ WORKDIR "/usr/src/app"
 
 COPY . .
 
-RUN npm install && \
-    npm run init && \
-    rm /usr/src/app/.env
+RUN npm install
 
 RUN apk update && \
     apk add clamav && \

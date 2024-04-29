@@ -28,6 +28,7 @@ export default {
     host: process.env.DB_HOST,
     port: Number.parseInt(process.env.DB_PORT),
     name: process.env.DB_NAME,
+    ssl: process.env.DB_SSL === 'true' || false,
     dialect: process.env.DB_DIALECT as Dialect || 'postgres' as Dialect
   }
 }
