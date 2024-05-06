@@ -1,7 +1,8 @@
 
-import fs from "fs";
-import mime from "mime-types";
-import path from "path";
+import fs from 'fs';
+import mime from 'mime-types';
+import path from 'path';
+import archiver from 'archiver';
 
 import log from '../utils/log';
 import Config from "../config";
@@ -167,31 +168,8 @@ const modifyFile = async (req, res, next) => {
 
     const filePath = path.join(Config.path_base, organization, document.path);
 
-    // if(Config.max_version_file > 1) {
+    if(Config.max_version_file > 1) await createVersion(id, filePath);
 
-    //   const directory = path.dirname(filePath);
-
-    //   const versions = (await fs.promises.readdir(directory))
-    //     .filter((file) => file.match(REGEX_VERSION))
-    //     .map((file) => ({
-    //       version: Number.parseInt(file.match(REGEX_VERSION)[0].replace('.', '')),
-    //       file
-    //     }))
-    //     .sort((a, b) => b.version - a.version);
-
-    //   for(const version of versions) {
-    //     if((version.version + 1) <= Config.max_version_file) {
-    //       const oldPath = path.join(directory, version.file);
-    //       const newPath = filePath + `.${version.version + 1}`;
-    //       await FilesUtils.mvAsync(oldPath, newPath);
-    //     }
-    //   }
-
-    //   const readStream = fs.createReadStream(filePath);
-    //   const writeStream = fs.createWriteStream(filePath + '.1');
-    //   await readStream.pipe(zlib.createGzip()).pipe(writeStream);
-    // }
-    
     await FilesUtils.mvAsync(req.file.path, filePath);
 
     res.status(StatusCodes.OK)
@@ -202,6 +180,53 @@ const modifyFile = async (req, res, next) => {
     next(error);
   }
 };
+
+const createVersion = async (id:string, filePath:string) => {
+
+  const directory = path.dirname(filePath);
+
+  const versions = (await fs.promises.readdir(directory))
+    .filter((file) => file.match(REGEX_VERSION))
+    .map((file) => ({
+      version: Number.parseInt(file.match(REGEX_VERSION)[0].replace('.', '')),
+      file
+    }))
+    .sort((a, b) => b.version - a.version);
+
+  for(const version of versions) {
+    if((version.version + 1) <= Config.max_version_file) {
+      const oldPath = path.join(directory, version.file);
+      const newPath = filePath + `.${version.version + 1}`;
+      await FilesUtils.mvAsync(oldPath, newPath);
+    }
+  }
+
+  const readStream = fs.createReadStream(filePath);
+  const writeStream = fs.createWriteStream(filePath + '.1');
+  const archive = archiver('zip', {
+    zlib: { level: 9 }
+  });
+
+  const archivePromise = new Promise<void>((resolve, reject) => {
+    writeStream.on('close', () => {
+      console.log(`Archivo comprimido creado con ${archive.pointer()} bytes totales`);
+      resolve();
+    });
+
+    archive.on('error', (err) => {
+      console.error('Error al comprimir:', err);
+      reject(err);
+    });
+
+    archive.pipe(writeStream);
+  });
+
+  archive.append(readStream, { name: id });
+
+  archive.finalize();
+
+  await archivePromise;
+}
 
 const modifyMetadata = async (req, res, next) => {
 

@@ -2,7 +2,7 @@
   "name": "pergamo",
   "author": "Raventools labs",
   "description": "",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "src/index.ts",
   "license": "MIT",
   "keywords": [],
@@ -38,5 +38,8 @@
     "init": "npx ts-node src/init.ts",
     "start": "npx ts-node src/index.ts",
     "test": "npx jest --detectOpenHandles"
+  },
+  "dependencies": {
+    "archiver": "^7.0.1"
   }
 }
