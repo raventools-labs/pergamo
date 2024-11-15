@@ -1,7 +1,7 @@
 services:
   pergamo:
     container_name: "pergamo"
-    image: "pergamo"
+    #image: "pergamo"
     restart: "always"
     build:
       context: .

@@ -14,4 +14,4 @@ RUN apk update && \
 
 EXPOSE 3000
 
-CMD clamd && npm run init && npm start
+CMD sh antivirus.sh && npm run init && npm start
